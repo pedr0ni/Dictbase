@@ -91,6 +91,18 @@ model.update(new Dictionary<string, object>
 });
 ```
 
+9. SELECT ALL
+```c#
+foreach (Dictionary<string, object> values in model.all())
+{
+    object value;
+    if (values.TryGetValue("name", out value))
+    {
+        Console.WriteLine(value);
+    }
+}
+```
+
 ## Authors
 
 * **M. Pedroni** - [Pedr0ni](https://twitter.com/pedr0ni_)
