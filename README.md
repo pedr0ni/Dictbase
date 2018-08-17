@@ -16,8 +16,7 @@ class User : RelationalModel {
 }
 ```
 
-2. In the super constructor you can define your properties for the model, by example the timestamps can be changed to false if you don't want to store timestamp changes in your table  
-_More properties comming up to next updates :)_
+2. In the super constructor you can define your properties for the model, by example the timestamps can be changed to false if you don't want to store timestamp changes in your table
 ```c#
 // User.cs
 ...
@@ -26,10 +25,11 @@ public User(MySqlConnection con) : base(con) {
 }
 ```
 Available Parameters:
-  * timestamps - Default value: true - Update timestamps column with the current time in milliseconds (Unix Timestamp)
-  * table - - Default value: Child class name in lower case + "s"
+  * timestamps - Default value: true - Update timestamps (created and updated) column with the current time in milliseconds (Unix Timestamp)
+  * table - - Default value: Child class name in lower case + "s"  
+_More properties comming up to next updates :)_
 
-3. Initialize you MySQL Connection. Remember to import **MySQL.Data.MySqlClient**
+3. Initialize you MySQL Connection. Remember to import **MySql.Data.MySqlClient**
 ```c#
 // Program.cs
 
@@ -60,7 +60,7 @@ foreach (Dictionary<string, object> rows in model.where(conditions))
 }
 ```
 
-6. Find with id (Integer)
+6. Find by id - Returns only one row
 ```c#
 Dictionary<string, object> row = model.find(1);
 object value;
@@ -74,7 +74,7 @@ if (row.TryGetValue("name", out value))
 ```c#
 Dictionary<string, object> row = new Dictionary<string, object>
 {
-    {"user", "foi" },
+    {"name", "matheus" },
     {"senha", "456" }
 };
 model.insert(row);

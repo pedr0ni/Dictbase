@@ -15,11 +15,11 @@ namespace ConsoleApp1
     {
 
         private MySqlConnection con;
+        private List<string> fields;
+
         public string table;
-
         public Boolean timestamps;
-        public List<string> fields;
-
+        
         /// <summary>
         /// Class constructor
         /// </summary>
@@ -148,13 +148,30 @@ namespace ConsoleApp1
             {
                 query += value.Key + ",";
             }
-            query = query.Substring(0, query.Length - 1) + ") VALUES ("; // Remove last ',' char
+            query = query.Substring(0, query.Length - 1) + ",updated,created) VALUES ("; // Remove last ',' char
             foreach (var value in values)
             {
                 query += "'" + value.Value + "',";
             }
-            query = query.Substring(0, query.Length - 1) + ")"; // Remove last ',' char
+            query = query.Substring(0, query.Length - 1); // Remove last ',' char
+            if (this.timestamps)
+            {
+                query += ", '" + Timestamp() + "', '" + Timestamp() + "')";
+            } else
+            {
+                query += ")";
+            }
             new MySqlCommand(query, this.con).ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Get current time in milliseconds (Unix TimeStamp)
+        /// </summary>
+        /// <returns>long with the timestamp</returns>
+        private long Timestamp()
+        {
+            var timeSpan = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            return (long)timeSpan.TotalSeconds;
         }
 
     }
