@@ -80,6 +80,17 @@ Dictionary<string, object> row = new Dictionary<string, object>
 model.insert(row);
 ```
 
+8. UPDATE
+```c#
+model.update(new Dictionary<string, object>
+{
+    {"senha", "123456" }
+}, new Dictionary<string, string>
+{
+    {"name", "matheus" }
+});
+```
+
 ## Authors
 
 * **M. Pedroni** - [Pedr0ni](https://twitter.com/pedr0ni_)

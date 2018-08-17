@@ -19,7 +19,7 @@ namespace ConsoleApp1
 
         public string table;
         public Boolean timestamps;
-        
+
         /// <summary>
         /// Class constructor
         /// </summary>
@@ -161,6 +161,32 @@ namespace ConsoleApp1
             {
                 query += ")";
             }
+            new MySqlCommand(query, this.con).ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Update data on table
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="conditions">Opitional</param>
+        public void update(Dictionary<string, object> rows, Dictionary<string, string> conditions = null)
+        {
+            string query = "UPDATE " + this.table + " SET ";
+            foreach (var row in rows)
+            {
+                query += row.Key + " = '" + row.Value + "',";
+            }
+            query = query.Substring(0, query.Length - 1);
+            if (conditions != null)
+            {
+                query += " WHERE ";
+                foreach (var condition in conditions)
+                {
+                    query += condition.Key + " = '" + condition.Value + "',";
+                }
+            }
+            query = query.Substring(0, query.Length - 1);
+
             new MySqlCommand(query, this.con).ExecuteNonQuery();
         }
 
