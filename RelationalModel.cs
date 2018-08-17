@@ -165,6 +165,27 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Select all data from table
+        /// </summary>
+        /// <returns>A List of string, object Dictionary</returns>
+        public List<Dictionary<string, object>> all()
+        {
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            string query = "SELECT * FROM " + this.table;
+            MySqlDataReader reader = new MySqlCommand(query, this.con).ExecuteReader();
+            while (reader.Read())
+            {
+                foreach (string field in this.fields)
+                {
+                    Dictionary<string, object> row = new Dictionary<string, object>();
+                    row.Add(field, reader[field]);
+                    result.Add(row);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Update data on table
         /// </summary>
         /// <param name="rows"></param>
