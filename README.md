@@ -6,7 +6,7 @@ Dictionary-based ORM made in .NET
 
 Change the namespace from **Dictbase** to your current namespace
 
-1. Create a class that extends RelationalModel
+1. Create a class that extends Dictbase
 
 ```c#
 // User.cs
