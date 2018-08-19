@@ -1,4 +1,4 @@
-# RelationalModel for C#
+# DictBase for C#
 
 A simple Object-relational Mapping for C#
 
