@@ -1,17 +1,17 @@
 # Dictbase for C#
 
-A simple Object-relational Mapping for C#
+Dictionary-based ORM made in .NET
 
 ### Examples 
 
-Change the namespace from **ConsoleApp1** to your current namespace
+Change the namespace from **Dictbase** to your current namespace
 
 1. Create a class that extends RelationalModel
 
 ```c#
 // User.cs
 ...
-class User : RelationalModel {
+class User : Dictbase {
 
 }
 ```
