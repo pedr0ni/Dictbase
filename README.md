@@ -51,6 +51,10 @@ Dictionary<string, string> conditions = new Dictionary<string, string>
     {"active", "1"}
 };
 
+/*
+ * The string represents the column name in the table
+ * The object represents the value contained in the column
+ */
 foreach (Dictionary<string, object> rows in model.where(conditions))
 {
     object value;
