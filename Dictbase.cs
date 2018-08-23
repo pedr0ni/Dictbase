@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using MySql.Data.MySqlClient;
 
-namespace Dictbase
+namespace ProjetoSaude.Manager
 {
     /// <summary>
     /// Dictbase for C#
@@ -29,6 +28,20 @@ namespace Dictbase
             this.con = con;
             this.timestamps = true;
             this.table = this.GetType().Name.ToLower() + "s";
+            this.fields = new List<string>();
+            this.loadFields();
+        }
+
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="con">MySQLConnection</param>
+        /// <param name="table">Table name</param>
+        public Dictbase(string table, MySqlConnection con)
+        {
+            this.con = con;
+            this.timestamps = true;
+            this.table = table;
             this.fields = new List<string>();
             this.loadFields();
         }
@@ -97,6 +110,25 @@ namespace Dictbase
             return result;
         }
 
+        public List<Dictionary<string, object>> custom(string query, string[] _fields = null)
+        {
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            MySqlDataReader reader = new MySqlCommand(query, this.con).ExecuteReader();
+            string[] useFields = this.fields.ToArray();
+            if (_fields != null) useFields = _fields;
+            while (reader.Read())
+            {
+                Dictionary<string, object> row = new Dictionary<string, object>();
+                foreach (string field in useFields)
+                {
+                    row.Add(field, reader[field]);
+                }
+                result.Add(row);
+            }
+            reader.Close();
+            return result;
+        }
+
         /// <summary>
         /// Return only fields on table
         /// </summary>
@@ -157,7 +189,8 @@ namespace Dictbase
             if (this.timestamps)
             {
                 query += ", '" + Timestamp() + "', '" + Timestamp() + "')";
-            } else
+            }
+            else
             {
                 query += ")";
             }
@@ -175,12 +208,12 @@ namespace Dictbase
             MySqlDataReader reader = new MySqlCommand(query, this.con).ExecuteReader();
             while (reader.Read())
             {
+                Dictionary<string, object> row = new Dictionary<string, object>();
                 foreach (string field in this.fields)
                 {
-                    Dictionary<string, object> row = new Dictionary<string, object>();
                     row.Add(field, reader[field]);
-                    result.Add(row);
                 }
+                result.Add(row);
             }
             return result;
         }
@@ -215,7 +248,7 @@ namespace Dictbase
         /// Get current time in milliseconds (Unix TimeStamp)
         /// </summary>
         /// <returns>long with the timestamp</returns>
-        private long Timestamp()
+        public long Timestamp()
         {
             var timeSpan = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
             return (long)timeSpan.TotalSeconds;
